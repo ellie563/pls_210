@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PLS 210 · Presentation #1</title>
+<style>
+:root{
+  --bg:#f3e8dc;
+  --paper:#fffaf4;
+  --paper2:#ead8c7;
+  --brown:#5a3b2d;
+  --brown2:#7b5542;
+  --brown3:#a87c60;
+  --line:#d2b9a5;
+  --shadow:rgba(74,45,31,.18);
+  --green:#8bd2b0;
+  --green-dark:#4c9c7d;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  color:var(--brown);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(255,255,255,.75), transparent 24%),
+    radial-gradient(circle at 90% 78%, rgba(188,143,111,.20), transparent 28%),
+    linear-gradient(135deg,#f7eee5 0%,#ead9c9 48%,#f6eee6 100%);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(120deg,rgba(89,57,42,.08),transparent 35%,rgba(89,57,42,.05));
+  mix-blend-mode:multiply;
+}
+.slide{
+  flex:1;
+  display:none;
+  width:100%;
+  max-width:1180px;
+  margin:0 auto;
+  padding:5.5vh 7vw 2vh;
+  overflow-y:auto;
+  position:relative;
+  z-index:1;
+}
+.slide.active{display:flex;flex-direction:column;justify-content:center}
+.slide.heart-bg:before{
+  content:"♡  ♡  ♡";
+  position:absolute;
+  left:-2%;
+  top:2%;
+  color:var(--brown3);
+  opacity:.18;
+  font-size:95px;
+  line-height:.72;
+  letter-spacing:-10px;
+  transform:rotate(-24deg);
+  pointer-events:none;
+}
+.slide.heart-bg:after{
+  content:"♡";
+  position:absolute;
+  right:3%;
+  bottom:7%;
+  color:var(--brown3);
+  opacity:.12;
+  font-size:115px;
+  transform:rotate(18deg);
+  pointer-events:none;
+}
+.title-page{
+  max-width:none;
+  padding:0 10vw;
+  align-items:center;
+  text-align:center;
+  isolation:isolate;
+  background:
+    linear-gradient(90deg,rgba(82,51,38,.78) 0%,rgba(82,51,38,.62) 34%,rgba(82,51,38,.18) 72%,rgba(82,51,38,.06) 100%);
+}
+.title-page:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-2;
+  background-image:url("https://vemaps.com/uploads/img/big/kr-03.jpg");
+  background-size:cover;
+  background-position:center;
+  opacity:.28;
+  filter:sepia(.65) saturate(.65);
+  transform:scale(1.04);
+}
+.title-page:after{
+  content:"♡";
+  position:absolute;
+  right:9%;
+  top:12%;
+  font-size:150px;
+  color:#fff4e9;
+  opacity:.17;
+  transform:rotate(18deg);
+}
+.title-page .tag,.title-page .num,.title-page h1,.title-page p{position:relative;color:#fff8f0}
+.title-page .tag{color:#ead8c7}
+.title-page h1{
+  max-width:1000px;
+  font-size:clamp(2.2rem,5.2vw,4.1rem);
+  text-shadow:0 5px 18px rgba(45,27,18,.25);
+}
+.tag{
+  font-size:12px;
+  line-height:1;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  font-weight:750;
+  color:var(--brown2);
+  margin-bottom:.55rem;
+}
+.num{
+  font:12px/1 ui-monospace,Menlo,monospace;
+  color:var(--brown3);
+  margin-bottom:1.35rem;
+  letter-spacing:.06em;
+}
+.page-title{
+  font-size:clamp(2rem,4vw,3.05rem);
+  line-height:1.05;
+  margin:0 0 1.7rem;
+  font-weight:800;
+  letter-spacing:-.025em;
+}
+.page-title:after{
+  content:"";
+  display:block;
+  width:72px;
+  height:4px;
+  border-radius:20px;
+  background:var(--brown2);
+  margin-top:.75rem;
+}
+h2{font-size:1.25rem;margin:0 0 .8rem}
+h3{font-size:1rem;margin:1rem 0 .35rem;color:var(--brown2)}
+p{margin:.45rem 0}
+ul{margin:.35rem 0;padding-left:1.2rem}
+li{margin-bottom:.55rem}
+.question{
+  width:min(980px,100%);
+  padding:2rem 2.3rem;
+  border-radius:28px;
+  background:rgba(255,250,244,.78);
+  border:1px solid rgba(125,83,61,.25);
+  box-shadow:0 18px 45px var(--shadow), inset 0 1px 0 rgba(255,255,255,.8);
+  backdrop-filter:blur(5px);
+  text-align:center;
+}
+.question h2{
+  font-size:clamp(1.45rem,3vw,2.1rem);
+  line-height:1.35;
+  font-weight:650;
+}
+.question:before{
+  content:"♡";
+  display:block;
+  color:var(--brown2);
+  font-size:38px;
+  margin-bottom:.25rem;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:1.15rem;
+}
+.card{
+  background:rgba(255,250,244,.86);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:1.25rem 1.35rem;
+  box-shadow:0 10px 26px rgba(74,45,31,.09);
+}
+.card b{
+  display:block;
+  color:var(--brown2);
+  font-size:.84rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:.45rem;
+}
+.card strong{font-size:1.05rem}
+.pill{
+  display:inline-block;
+  padding:.28rem .7rem;
+  border-radius:999px;
+  background:var(--paper2);
+  color:var(--brown2);
+  font-size:.78rem;
+  font-weight:750;
+  margin-right:.35rem;
+}
+table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  background:rgba(255,250,244,.86);
+  border:1px solid var(--line);
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 12px 28px rgba(74,45,31,.09);
+}
+th,td{
+  text-align:left;
+  padding:1rem 1.1rem;
+  border-bottom:1px solid var(--line);
+  vertical-align:top;
+  font-size:1rem;
+}
+tr:last-child th,tr:last-child td{border-bottom:none}
+th{color:var(--brown2);width:25%;font-weight:750}
+.src{
+  background:rgba(255,250,244,.86);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:1rem 1.15rem;
+  margin:.75rem 0;
+  box-shadow:0 9px 22px rgba(74,45,31,.07);
+}
+.src .who{font-weight:800;color:var(--brown2)}
+.highlight{
+  background:linear-gradient(135deg,rgba(233,213,195,.95),rgba(255,250,244,.88));
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:1.15rem 1.3rem;
+  box-shadow:0 11px 25px rgba(74,45,31,.08);
+}
+.highlight:before{
+  content:"♡";
+  color:var(--brown2);
+  font-size:25px;
+  margin-right:8px;
+}
+.hyp{
+  background:var(--paper);
+  border-left:5px solid var(--brown2);
+  border-radius:0 18px 18px 0;
+  padding:1.05rem 1.3rem;
+  margin:1rem 0;
+  box-shadow:0 9px 22px rgba(74,45,31,.07);
+}
+.two{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1.15rem;
+}
+.ai-ball{
+  width:90px;
+  height:90px;
+  position:absolute;
+  bottom:68px;
+  left:0;
+  z-index:5;
+  filter:drop-shadow(0 8px 7px rgba(42,86,68,.25));
+  transition:left .65s cubic-bezier(.2,.8,.25,1),transform .65s cubic-bezier(.2,.8,.25,1);
+}
+.journey{
+  width:calc(100% - 150px);
+  margin:1.4rem auto .15rem;
+  position:relative;
+  height:55px;
+}
+.journey-line{
+  position:absolute;
+  left:2%;
+  right:2%;
+  top:18px;
+  height:4px;
+  border-radius:10px;
+  background:linear-gradient(90deg,var(--brown3),#b7957f,var(--brown2));
+  box-shadow:0 2px 5px rgba(74,45,31,.16);
+}
+.journey-points{
+  position:absolute;
+  inset:0;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+}
+.point{
+  width:34px;
+  text-align:center;
+  position:relative;
+  z-index:2;
+}
+.point i{
+  display:block;
+  width:15px;
+  height:15px;
+  margin:11px auto 0;
+  border-radius:50%;
+  background:var(--paper);
+  border:3px solid var(--brown2);
+  box-shadow:0 2px 6px rgba(74,45,31,.15);
+}
+.point span{
+  display:block;
+  margin-top:9px;
+  font-size:9px;
+  line-height:1;
+  color:var(--brown2);
+  font-weight:750;
+  white-space:nowrap;
+  transform:translateX(-50%);
+  margin-left:50%;
+}
+.refs{
+  columns:2;
+  column-gap:2rem;
+  font-size:.88rem;
+  line-height:1.5;
+  background:rgba(255,250,244,.6);
+  border-radius:18px;
+  padding:1rem 1.5rem 1rem 2rem;
+}
+.refs li{
+  break-inside:avoid;
+  margin-bottom:.7rem;
+}
+.refs a{color:var(--brown2)}
+.nav{
+  position:relative;
+  z-index:10;
+  padding:.65rem 5vw .85rem;
+  background:rgba(229,211,195,.92);
+  border-top:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:72px;
+}
+.nav button{display:none}
+@media(max-width:760px){
+  body{overflow:auto}
+  .slide{padding:4vh 6vw 1vh}
+  .grid,.two{grid-template-columns:1fr}
+  .refs{columns:1}
+  .journey{width:calc(100% - 110px)}
+  .ai-ball{width:65px;height:65px;bottom:73px}
+}
+</style>
+</head>
+<body>
+
+<section class="slide title-page active" data-i="0">
+  <div class="tag">PLS 210 · Research Design</div>
+  <div class="num">PRESENTATION #1</div>
+  <h1>Municipal Elderly-Care Spending<br>and Youth-Program Funding<br>in South Korea</h1>
+  <p style="font-size:1.15rem">A quantitative study of a possible local budget trade-off · 2015–2023</p>
+</section>
+
+<section class="slide heart-bg" data-i="1">
+  <div class="tag">Research Question</div>
+  <h1 class="page-title">RQ</h1>
+  <div class="question">
+    <h2>“To what extent did rising municipal spending on elderly care reduce local government funding for youth programs in South Korea between 2015 and 2023?”</h2>
+  </div>
+</section>
+
+<section class="slide heart-bg" data-i="2">
+  <div class="tag">Question Design</div>
+  <h1 class="page-title">Empirical · Scoped · Answerable</h1>
+  <div class="grid">
+    <div class="card"><b>Empirical</b>It asks what actually happened to public spending, so it can be studied with budget data rather than opinion.</div>
+    <div class="card"><b>Scoped</b>The focus is municipal governments in South Korea, specifically elderly care and youth programs.</div>
+    <div class="card"><b>Time window · 2015–2023</b>This is the period for which standardized, comparable municipal financial data make a consistent panel possible.</div>
+    <div class="card"><b>Answerable</b>Local Finance 365 provides municipal-level spending data for the relevant categories across this window.</div>
+  </div>
+</section>
+
+<section class="slide heart-bg" data-i="3">
+  <div class="tag">Context & Research Position</div>
+  <h1 class="page-title">Positioning & Epistemology</h1>
+  <div class="grid">
+    <div class="card">
+      <b>Why municipal governments?</b>
+      <ul>
+        <li>They are the local level where spending priorities become actual budget allocations.</li>
+        <li>Municipalities face different demographic and fiscal pressures, creating variation to compare.</li>
+        <li>The study therefore connects population ageing to concrete local budget choices.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <b>Why 2015–2023?</b>
+      <ul>
+        <li>The period provides standardized, comparable integrated financial statements across local governments.</li>
+        <li>This makes a consistent municipality-level panel possible.</li>
+        <li>It also captures a period of increasing pressure from population ageing.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <b>Epistemology</b><strong>Positivist</strong><br>Budgets are treated as observable and measurable evidence.
+    </div>
+    <div class="card">
+      <b>Design</b><strong>Quantitative · Large-N panel</strong><br>“To what extent” requires measuring relationships across many municipalities.
+    </div>
+  </div>
+</section>
+
+<section class="slide heart-bg" data-i="4">
+  <div class="tag">Why It Matters</div>
+  <h1 class="page-title">Contribution</h1>
+  <div class="grid">
+    <div class="card">
+      <b>Why the study matters</b>
+      <p>Population ageing creates pressure for governments to expand elderly-care spending while municipalities still need to fund programs for younger residents.</p>
+    </div>
+    <div class="card">
+      <b>Research gap</b>
+      <p>Existing Korean fiscal studies explain broad changes in local spending, but they do not directly test the specific elderly-care → youth-program relationship.</p>
+    </div>
+    <div class="card">
+      <b>What this study contributes</b>
+      <p>It moves the discussion from broad welfare categories to a concrete, measurable intra-welfare budget trade-off.</p>
+    </div>
+    <div class="card">
+      <b>What remains unclosed</b>
+      <p>The study does not explain every reason why youth spending changes. Other demographic, political, transfer, and revenue factors may also shape the outcome.</p>
+    </div>
+  </div>
+  <div class="highlight" style="margin-top:1rem"><b>Contribution in one line:</b> testing whether the growth of one age-targeted welfare priority is associated with reduced funding for another.</div>
+</section>
+
+<section class="slide heart-bg" data-i="5">
+  <div class="tag">Literature Review · Branch 1</div>
+  <h1 class="page-title">Lit Review · Decentralization</h1>
+  <div class="highlight"><b>Cluster 1:</b> Decentralization changes the <b>composition</b> of local budgets, not just their size.</div>
+  <div class="src"><span class="who">Kwon:</span> As Korea decentralized starting in the 1990s, local governments picked up real discretion while the central government's share shrank.</div>
+  <div class="src"><span class="who">Park:</span> Using data from 2008–2018, Park found that <b>revenue-side decentralization reduces welfare's share of local budgets</b> and pushes spending from current expenses toward capital investment.</div>
+  <div class="highlight"><b>Finding from Branch 1:</b> Decentralization can change which parts of the local budget receive resources.</div>
+</section>
+
+<section class="slide heart-bg" data-i="6">
+  <div class="tag">Literature Review · Branch 2</div>
+  <h1 class="page-title">Lit Review · Political & Institutional Levers</h1>
+  <div class="highlight"><b>Cluster 2:</b> Political and institutional levers decide <b>which categories move</b>.</div>
+  <div class="src"><span class="who">Ha & Lee:</span> Politically aligned regions get larger transfers from the center, and those transfers translate into higher social-welfare and education spending. Progressive mayors spend noticeably more on both than conservative ones.</div>
+  <div class="src"><span class="who">Lee & Min:</span> Participatory budgeting shifts spending toward <b>welfare, health, and transport</b>, and away from development projects.</div>
+  <div class="highlight"><b>Key tension:</b> Park finds decentralization <i>shrinking</i> welfare's share, while Ha & Lee and Lee & Min identify specific channels that <i>grow</i> it.</div>
+</section>
+
+<section class="slide heart-bg" data-i="7">
+  <div class="tag">Literature Review · Synthesis</div>
+  <h1 class="page-title">What the Literature Tells Us</h1>
+  <div class="two">
+    <div class="card">
+      <b>Finding 1</b>
+      <p><strong>Decentralization does not have one automatic effect.</strong> Park finds a smaller welfare share, while other studies identify channels that increase welfare spending.</p>
+    </div>
+    <div class="card">
+      <b>Finding 2</b>
+      <p><strong>The effect depends on the lever.</strong> Transfers, political leadership, and participatory budgeting can move spending in different directions.</p>
+    </div>
+  </div>
+  <div class="highlight" style="margin-top:1rem">
+    <b>Overall:</b> Welfare spending in Korean municipalities does not seem to respond to decentralization as one single force — it depends on which particular lever is being pulled.
+  </div>
+</section>
+
+<section class="slide heart-bg" data-i="8">
+  <div class="tag">Theory</div>
+  <h1 class="page-title">Theory & Mechanism</h1>
+  <div class="highlight"><b>Mechanism:</b> Elderly-care spending is relatively constrained by welfare obligations and central-government co-financing. Youth-program spending is comparatively more discretionary. If elderly-care spending grows faster than the total budget, pressure may fall on flexible spending lines.</div>
+  <div class="hyp">
+    <b>H1:</b> Municipalities with a larger rise in elderly-care spending from 2015–2023 saw a larger fall in youth-program funding.<br><br>
+    <b>H0:</b> Changes in elderly-care spending are unrelated to changes in youth-program funding.
+  </div>
+  <table>
+    <tr><th>Independent variable</th><td>Change in elderly-care spending, 2015–2023, as a share of the municipal budget.</td></tr>
+    <tr><th>Dependent variable</th><td>Change in youth-program funding over the same period.</td></tr>
+    <tr><th>Controls</th><td>Revenue decentralization · mayoral political ideology · participatory budgeting · total budget size.</td></tr>
+  </table>
+</section>
+
+<section class="slide heart-bg" data-i="9">
+  <div class="tag">AI Transparency</div>
+  <h1 class="page-title">AI Transparency</h1>
+  <div class="two">
+    <div class="card">
+      <b>How I used AI</b>
+      <ul>
+        <li>Formed and narrowed the research question.</li>
+        <li>Organized the literature into two branches.</li>
+        <li>Checked whether selected sources connected to my argument.</li>
+        <li>Helped me identify where the mechanism needed clearer explanation.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <b>What remained my responsibility</b>
+      <ul>
+        <li>I chose the topic and research question.</li>
+        <li>I evaluated and selected the sources.</li>
+        <li>I made the final claims and decided how to frame the research gap.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide heart-bg" data-i="10">
+  <div class="tag">Reflection</div>
+  <h1 class="page-title">What AI Helped Me Understand</h1>
+  <div class="two">
+    <div class="card">
+      <b>From broad topic → testable mechanism</b>
+      “Ageing affects local budgets” is too broad. The useful question is whether a specific increase in elderly-care spending is connected to a measurable change in another specific budget line.
+    </div>
+    <div class="card">
+      <b>Why the literature gap matters</b>
+      The existing studies explain how local spending is shaped, but they do not directly examine the elderly-care → youth-program relationship I want to test.
+    </div>
+  </div>
+</section>
+
+<section class="slide heart-bg" data-i="11">
+  <div class="tag">Reflection</div>
+  <h1 class="page-title">What I Still Don’t Understand</h1>
+  <div class="two">
+    <div class="card">
+      <b>What the data will actually show</b>
+      I do not yet know whether the expected budget trade-off will appear consistently across municipalities — and that is something the empirical analysis needs to establish.
+    </div>
+    <div class="card">
+      <b>How strong the relationship will be</b>
+      Even if the relationship exists, I still need to determine how large it is and whether it remains after accounting for other fiscal and political factors.
+    </div>
+  </div>
+  <div class="highlight" style="margin-top:1rem"><b>Next step:</b> test the proposed mechanism rather than assuming the expected relationship is already established.</div>
+</section>
+
+<section class="slide heart-bg" data-i="12">
+  <div class="tag">Sources</div>
+  <h1 class="page-title">References</h1>
+  <ol class="refs">
+    <li>Ha, E., &amp; Lee, D. W. (2022). Partisanship, fiscal transfers, and social spending in Korea: The politics of partial decentralization. <i>Journal of East Asian Studies, 22</i>(2), 171–200. <a href="https://doi.org/10.1017/jea.2021.33">doi.org/10.1017/jea.2021.33</a></li>
+    <li>International Monetary Fund. (2025). <i>World economic outlook: A critical juncture amid policy shifts</i> (pp. 49–75). <a href="https://www.imf.org/-/media/files/publications/weo/2025/april/english/ch2.pdf">imf.org</a></li>
+    <li>Korea Fiscal Information Service. (n.d.). <i>About KFIS.</i> <a href="https://www.fis.kr/en/about">fis.kr/en/about</a></li>
+    <li>Korea JoongAng Daily. (2026, August 12). Gyeonggi's fiscal crisis stems from unchecked spending [Editorial]. <a href="https://www.koreajoongangdaily.com/opinion/gyeonggis-fiscal-crisis-stems-from-unchecked-spending/12819376">koreajoongangdaily.com</a></li>
+    <li>Kwon, O. (2003). The effects of fiscal decentralization on public spending: The Korean case. <i>Public Budgeting &amp; Finance, 23</i>(1), 1–20. <a href="https://doi.org/10.1111/j.0275-1100.2003.02304001.x">doi.org/10.1111/j.0275-1100.2003.02304001.x</a></li>
+    <li>Lee, D., &amp; Min, S. (2023). Participatory budgeting and the pattern of local government spending: Evidence from South Korea. <i>European Journal of Political Economy, 76</i>, 102235. <a href="https://doi.org/10.1016/j.ejpoleco.2022.102235">doi.org/10.1016/j.ejpoleco.2022.102235</a></li>
+    <li>Ministry of the Interior and Safety. (n.d.). <i>Local Finance 365 (지방재정365)</i> [Data portal]. <a href="https://www.lofin365.go.kr">lofin365.go.kr</a></li>
+    <li>Ministry of the Interior and Safety. (n.d.). <i>Public data portal (data.go.kr)</i> [Data set repository]. <a href="https://www.data.go.kr">data.go.kr</a></li>
+    <li>Park, J. (2022). Fiscal decentralization and the composition of local government expenditure: Evidence from South Korea. <i>Public Finance Review, 50</i>(1), 62–90. <a href="https://doi.org/10.1177/10911421221093142">doi.org/10.1177/10911421221093142</a></li>
+    <li>The New York Times. (2019, April 27). Running out of children, a South Korea school enrolls illiterate grandmothers. <a href="https://www.nytimes.com/2019/04/27/world/asia/south-korea-school-grandmothers.html">nytimes.com</a></li>
+    <li>World Bank. (2024). <i>Age dependency ratio (% of working-age population)</i> [Data set]. <a href="https://data.worldbank.org/indicator/SP.POP.DPND">data.worldbank.org</a></li>
+    <li>World Bank. (2023). <i>World development report 2023: Migrants, refugees, and societies.</i> <a href="https://www.worldbank.org/en/publication/wdr2023">worldbank.org</a></li>
+    <li>Yoon, M. (2025, September 7). State welfare spending to reach W237tr by 2029: report. <i>The Korea Herald.</i> <a href="https://www.koreaherald.com/article/10570197">koreaherald.com</a></li>
+  </ol>
+</section>
+
+<div class="nav">
+  <div class="journey">
+    <div class="journey-line"></div>
+    <div class="journey-points">
+      <div class="point"><i></i><span>START</span></div>
+      <div class="point"><i></i><span>RQ</span></div>
+      <div class="point"><i></i><span>DESIGN</span></div>
+      <div class="point"><i></i><span>POSITION</span></div>
+      <div class="point"><i></i><span>CONTRIB.</span></div>
+      <div class="point"><i></i><span>LIT 1</span></div>
+      <div class="point"><i></i><span>LIT 2</span></div>
+      <div class="point"><i></i><span>SYNTHESIS</span></div>
+      <div class="point"><i></i><span>THEORY</span></div>
+      <div class="point"><i></i><span>AI</span></div>
+      <div class="point"><i></i><span>REFLECT</span></div>
+      <div class="point"><i></i><span>END</span></div>
+      <svg class="ai-ball" id="cortisBall" viewBox="0 0 100 100" aria-label="green CORTIS-style ball">
+  <g>
+    <path d="M17 37 L7 25 L24 30 L20 12 L34 25 L40 7 L47 24 L60 9 L61 27 L80 16 L72 32 L93 30 L78 42 L94 52 L76 55 L89 70 L70 66 L74 88 L58 75 L49 94 L42 76 L25 88 L29 69 L9 74 L23 59 L6 48 L25 45 Z" fill="#88d5b2"/>
+    <circle cx="50" cy="51" r="36" fill="#8ed9b8" stroke="#4b9075" stroke-width="2"/>
+    <ellipse cx="62" cy="43" rx="14" ry="17" fill="#f7eee5" stroke="#4b9075" stroke-width="2"/>
+    <circle cx="66" cy="46" r="6" fill="#4a3428"/>
+    <path d="M39 61 Q50 72 61 61" fill="#4a3428"/>
+    <circle cx="33" cy="51" r="3" fill="#4a3428"/>
+  </g>
+</svg>
+    </div>
+  </div>
+</div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let i=0;
+const ball=document.getElementById('cortisBall');
+const points=[...document.querySelectorAll('.point')];
+
+function render(){
+  slides.forEach((s,idx)=>s.classList.toggle('active',idx===i));
+  const current=points[Math.min(i,points.length-1)];
+  const journey=document.querySelector('.journey-points');
+  if(current && journey){
+    const left=current.offsetLeft + current.offsetWidth/2 - ball.offsetWidth/2;
+    ball.style.left=Math.max(0,left)+'px';
+    ball.style.transform=(i%2 ? 'translateY(-16px) rotate(-12deg)' : 'translateY(0) rotate(8deg)');
+  }
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight' && i<slides.length-1){i++;render();}
+  if(e.key==='ArrowLeft' && i>0){i--;render();}
+});
+window.addEventListener('resize',render);
+window.addEventListener('load',render);
+render();
+</script>
+</body>
+</html>
